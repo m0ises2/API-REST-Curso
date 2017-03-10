@@ -23,6 +23,7 @@ app.get('/api/products', (req, res) => {
     res.status(200).send({ products: products })
   })
 })
+
 // GET un solo producto según su ID:
 app.get('/api/product/:productId', (req, res) => {
   let productId = req.params.productId
@@ -58,11 +59,29 @@ app.post('/api/product', (req, res) => {
 
 // PUT:
 app.put('/api/product/:productId', (req, res) => {
+  let productId = req.params.productId
+  let bodyUpdate = req.body
 
+  Product.findByIdAndUpdate(productId, bodyUpdate, (error, productUpdated) => {
+    if (error) return res.status(500).send({message: `Error al realizar la actualización del producto. Error: ${error}`})
+
+    res.status(200).send({ product: productUpdated })
+  })
 })
+
 // DELETE:
 app.delete('/api/product/:productId', (req, res) => {
+  let productId = req.params.productId
 
+  Product.findById(productId, (error, product) => {
+    if (error) return res.status(500).send({message: `Error al realizar la petición: ${error}`})
+
+    product.remove(error => {
+      if (error) return res.status(500).send({message: `Error al realizar el borrado del producto. Error: ${error}`})
+
+      res.status(200).send({ message: `El producto ha sido eliminado` })
+    })
+  })
 })
 
 // Database:
