@@ -15,12 +15,24 @@ app.use(bodyParser.json())
   Endpoints:
 */
 // GET:
-app.get('/api/product', (req, res) => {
-  res.status(200).send({ message: 'Todo O.K' })
+app.get('/api/products', (req, res) => {
+  Product.find({}, (error, products) => {
+    if (error) return res.status(500).send({message: `Error al realizar la petición: ${error}`})
+    if (!products) return res.status(404).send({message: `No existen productos`})
+
+    res.status(200).send({ products: products })
+  })
 })
-
+// GET un solo producto según su ID:
 app.get('/api/product/:productId', (req, res) => {
+  let productId = req.params.productId
 
+  Product.findById(productId, (error, product) => {
+    if (error) return res.status(500).send({message: `Error al realizar la petición: ${error}`})
+    if (!product) return res.status(404).send({message: `El producto no existe`})
+
+    res.status(200).send({ product: product })
+  })
 })
 
 // POST:
