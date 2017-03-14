@@ -18,6 +18,8 @@ const userSchema = new Schema({
 })
 
 /*
+  Middleware del tipo pre.
+  Más información -> http://mongoosejs.com/docs/middleware.html
   Función que se ejecutará antes de que el evento save ocurra en mongoose:
 */
 userSchema.pre('save', (next) => {
@@ -37,6 +39,8 @@ userSchema.pre('save', (next) => {
 })
 
 /*
+  Método personalizado.
+  Más información -> http://mongoosejs.com/docs/guide.html
   Método que hashea un email y retorna el url ficticio del avatar
   correspondiente al usuario
 */
